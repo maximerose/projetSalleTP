@@ -30,6 +30,20 @@ class SalleController extends AbstractController
         }
     }
 
+    public function voir(int $id): Response
+    {
+        $salle = $this->getDoctrine()->getRepository(Salle::class)->find($id);
+        if (!$salle) {
+            throw $this->createNotFoundException('Salle[id=' . $id . '] inexistante');
+        }
+        return $this->render(
+            'salles/voir.html.twig',
+            [
+                'salle' => $salle
+            ]
+        );
+    }
+
     public function dix(): Response
     {
         return $this->redirectToRoute(
@@ -86,5 +100,23 @@ class SalleController extends AbstractController
         $remoteAddr = $request->server->get('REMOTE_ADDR');
         $data = ['remoteAddr' => $remoteAddr];
         return new JsonResponse($data);
+    }
+
+    public function ajouter(string $batiment, int $etage, int $numero): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $salle = new Salle();
+        $salle
+            ->setBatiment($batiment)
+            ->setEtage($etage)
+            ->setNumero($numero);
+        $em->persist($salle);
+        $em->flush();
+        return $this->redirectToRoute(
+            'salle_tp_voir',
+            [
+                'id' => $salle->getId()
+            ]
+        );
     }
 }
