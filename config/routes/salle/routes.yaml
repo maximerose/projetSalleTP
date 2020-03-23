@@ -7,3 +7,15 @@ salle_tp_afficher:
   controller: App\Controller\SalleController::afficher
   requirements:
     numero: '\d{1,2}'
+
+salle_tp_dix:
+  path: /dix
+  controller: App\Controller\SalleController::dix
+
+salle_tp_test_xml:
+  path: /test/xml
+  controller: App\Controller\SalleController::testXml
+
+salle_tp_test_json:
+  path: /test/json
+  controller: App\Controller\SalleController::testJson

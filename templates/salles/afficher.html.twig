@@ -10,5 +10,7 @@
             blablabla {{ numero }} blablabla {{ numero }} blablabla {{ numero }}
             blablabla {{ numero }} blablabla {{ numero }} ....
         </p>
+        <p>Lien vers <a href="{{ path('salle_tp_afficher', {'numero': numero + 1}) }}">la suivante</a></p>
+        <p>Lien vers <a href="{{ path('salle_tp_accueil') }}">l'accueil</a></p>
     </body>
 </html>
