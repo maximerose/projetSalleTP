@@ -2,12 +2,24 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class SalleController
+class SalleController extends AbstractController
 {
-    public function accueil ()
+    public function accueil(): Response
     {
-        return new Response("<html><body><h1>Salles :</h1> <p>Voici quelques informations concernant les salles<br \>blablabla blablabla blablabla blablabla blablabla blablabla blablabla blablabla ....</p></body></html>");
+        return $this->render(
+            'salles/accueil.html.twig',
+            ['numero' => rand(1, 84)]
+        );
+    }
+
+    public function afficher(int $numero): Response
+    {
+        return $this->render(
+            'salles/afficher.html.twig',
+            ['numero' => $numero]
+        );
     }
 }
