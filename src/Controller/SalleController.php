@@ -19,10 +19,14 @@ class SalleController extends AbstractController
 
     public function afficher(int $numero): Response
     {
-        return $this->render(
-            'salles/afficher.html.twig',
-            ['numero' => $numero]
-        );
+        if ($numero > 50) {
+            throw $this->createNotFoundException('C\'est trop !');
+        } else {
+            return $this->render(
+                'salles/afficher.html.twig',
+                ['numero' => $numero]
+            );
+        }
     }
 
     public function dix(): Response
