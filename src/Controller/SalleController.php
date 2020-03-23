@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Salle;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +35,36 @@ class SalleController extends AbstractController
         return $this->redirectToRoute(
             'salle_tp_afficher',
             ['numero' => 10]
+        );
+    }
+
+    public function treize(): Response
+    {
+        $salle = new Salle();
+        $salle
+            ->setBatiment('D')
+            ->setEtage(1)
+            ->setNumero(13);
+        return $this->render(
+            'salles/treize.html.twig',
+            [
+                'salle' => $salle
+            ]
+        );
+    }
+
+    public function quatorze(): Response
+    {
+        $salle = new Salle();
+        $salle
+            ->setBatiment('D')
+            ->setEtage(1)
+            ->setNumero(14);
+        return $this->render(
+            'salles/quatorze.html.twig',
+            [
+                'designation' => $salle->__toString()
+            ]
         );
     }
 

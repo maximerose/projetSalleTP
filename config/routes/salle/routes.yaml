@@ -12,6 +12,14 @@ salle_tp_dix:
   path: /dix
   controller: App\Controller\SalleController::dix
 
+salle_tp_treize:
+  path: /treize
+  controller: App\Controller\SalleController:treize
+
+salle_tp_quatorze:
+  path: /quatorze
+  controller: App\Controller\SalleController:quatorze
+
 salle_tp_test_xml:
   path: /test/xml
   controller: App\Controller\SalleController::testXml
