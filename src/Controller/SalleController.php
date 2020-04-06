@@ -123,7 +123,7 @@ class SalleController extends AbstractController
         );
     }
 
-    public function ajouter2(Request $request)
+    public function ajouter2(Request $request): Response
     {
         $salle = new Salle();
         $form = $this->createFormBuilder($salle)
