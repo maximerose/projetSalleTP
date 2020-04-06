@@ -135,7 +135,7 @@ class SalleController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($salle);
             $em->flush();
