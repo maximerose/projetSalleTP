@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Salle;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -116,6 +119,39 @@ class SalleController extends AbstractController
             'salle_tp_voir',
             [
                 'id' => $salle->getId()
+            ]
+        );
+    }
+
+    public function ajouter2(Request $request)
+    {
+        $salle = new Salle();
+        $form = $this->createFormBuilder($salle)
+            ->add('batiment', TextType::class)
+            ->add('etage', IntegerType::class)
+            ->add('numero', IntegerType::class)
+            ->add('envoyer', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($salle);
+            $em->flush();
+
+            return $this->redirectToRoute(
+                'salle_tp_voir',
+                [
+                    'id' => $salle->getId()
+                ]
+            );
+        }
+
+        return $this->render(
+            'salles/ajouter2.html.twig',
+            [
+                'monFormulaire' => $form->createView()
             ]
         );
     }

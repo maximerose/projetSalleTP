@@ -22,6 +22,10 @@ salle_tp_ajouter:
     etage: \d
     numero: \d{1,2}
 
+salle_tp_ajouter2:
+  path: /ajouter2
+  controller: App\Controller\SalleController:ajouter2
+
 salle_tp_dix:
   path: /dix
   controller: App\Controller\SalleController::dix
