@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Salle;
+use App\Service\ImageTexteGenerateur;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -51,6 +52,21 @@ class SalleController extends AbstractController
             [
                 'salle' => $salle
             ]
+        );
+    }
+
+    public function voirautrement(ImageTexteGenerateur $texte2image, $id)
+    {
+        $salle = $this->getDoctrine()->getRepository(Salle::class)->find($id);
+
+        if (!$salle)
+            throw $this->createNotFoundException('Salle[id=' . $id . '] inexistante');
+
+        $sourceDataUri = $texte2image->texte2Image($salle->__toString());
+
+        return $this->render(
+            'salles/voirautrement.html.twig',
+            ['dataURI' => $sourceDataUri]
         );
     }
 
@@ -169,4 +185,13 @@ class SalleController extends AbstractController
             ]
         );
     }
+
+    public function navigation()
+    {
+        $salles = $this->getDoctrine()
+            ->getRepository(Salle::class)->findAll();
+        return $this->render('salles/navigation.html.twig',
+            array('salles' => $salles));
+    }
+
 }

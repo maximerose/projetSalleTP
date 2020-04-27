@@ -14,6 +14,10 @@ salle_tp_voir:
   requirements:
     id: \d+
 
+salle_tp_voirautrement:
+  path: /voirautrement/{id}
+  controller: App\Controller\SalleController::voirautrement
+
 salle_tp_ajouter:
   path: /ajouter/{batiment}-{etage}.{numero}
   controller: App\Controller\SalleController::ajouter
@@ -45,3 +49,7 @@ salle_tp_test_xml:
 salle_tp_test_json:
   path: /test/json
   controller: App\Controller\SalleController::testJson
+
+salle_tp_navigation:
+  path: /navigation
+  controller: App\Controller\SalleController::navigation
