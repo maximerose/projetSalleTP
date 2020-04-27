@@ -10,14 +10,21 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class SalleController extends AbstractController
 {
-    public function accueil(): Response
+    public function accueil(Session $session): Response
     {
+        if ($session->has('nbreFois')) {
+            $session->set('nbreFois', $session->get('nbreFois') + 1);
+        } else {
+            $session->set('nbreFois', 1);
+        }
         return $this->render(
             'salles/accueil.html.twig',
-            ['numero' => rand(1, 84)]
+            ['nbreFois' => $session->get('nbreFois')]
         );
     }
 
@@ -105,7 +112,7 @@ class SalleController extends AbstractController
         return new JsonResponse($data);
     }
 
-    public function ajouter(string $batiment, int $etage, int $numero): Response
+    public function ajouter(string $batiment, int $etage, int $numero, ValidatorInterface $validator): Response
     {
         $em = $this->getDoctrine()->getManager();
         $salle = new Salle();
@@ -113,6 +120,13 @@ class SalleController extends AbstractController
             ->setBatiment($batiment)
             ->setEtage($etage)
             ->setNumero($numero);
+
+        $listeErreurs = $validator->validate($salle);
+
+        if ($listeErreurs->count() > 0) {
+            throw $this->createNotFoundException('Mauvaise saisie de données : ' . $listeErreurs->__toString());
+        }
+
         $em->persist($salle);
         $em->flush();
         return $this->redirectToRoute(

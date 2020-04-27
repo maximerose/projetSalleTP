@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Validator\Constraints as MesAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -32,6 +33,7 @@ class Salle
     /**
      * @ORM\Column(type="smallint")
      * @Assert\LessThanOrEqual(value=80, message="la valeur doit être <= {{ compared_value }}")
+     * @MesAssert\PhobieNumerique
      */
     private $numero;
 
