@@ -53,3 +53,14 @@ salle_tp_test_json:
 salle_tp_navigation:
   path: /navigation
   controller: App\Controller\SalleController::navigation
+
+salle_tp_modifier:
+  path: /modifier/{id}
+  controller: App\Controller\SalleController::modifier
+  requirements:
+    id: \d+
+
+salle_tp_modifier_suite:
+  path: /modifierSuite/{id}
+  controller: App\Controller\SalleController::modifierSuite
+  methods: POST
