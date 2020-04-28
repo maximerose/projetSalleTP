@@ -40,18 +40,9 @@ class SalleController extends AbstractController
         }
     }
 
-    public function voir(int $id): Response
+    public function voir(Salle $salle): Response
     {
-        $salle = $this->getDoctrine()->getRepository(Salle::class)->find($id);
-        if (!$salle) {
-            throw $this->createNotFoundException('Salle[id=' . $id . '] inexistante');
-        }
-        return $this->render(
-            'salles/voir.html.twig',
-            [
-                'salle' => $salle
-            ]
-        );
+        return $this->render('salles/voir.html.twig', ['salle' => $salle]);
     }
 
     public function voirautrement(ImageTexteGenerateur $texte2image, $id)
