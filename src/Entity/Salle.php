@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SalleRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Salle
 {
@@ -81,5 +82,14 @@ class Salle
         $this->numero = $numero;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function corrigeNomBatiment()
+    {
+        $this->batiment = strtoupper($this->batiment);
     }
 }

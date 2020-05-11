@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Salle;
+use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -201,6 +202,51 @@ class EssaiController extends AbstractController
  voir phpmyadmin</a></body></html>');
     }
 
+    public function test16()
+    {
+        $repo = $this->getDoctrine()->getManager()
+            ->getRepository(Salle::class);
+        $result = $repo->testGetResult();
+        dump($result);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test17()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT s FROM App\Entity\Salle s WHERE s.batiment = 'B' ");
+        $arraySalles = $query->getResult(Query::HYDRATE_SCALAR);
+        dump($arraySalles);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test18()
+    {
+        $repo = $this->getDoctrine()->getManager()
+            ->getRepository(Salle::class);
+        $result = $repo->testGetArrayResult();
+        dump($result);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test19()
+    {
+        $repo = $this->getDoctrine()->getManager()
+            ->getRepository(Salle::class);
+        $result = $repo->testGetSingleScalarResult();
+        dump($result);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test20()
+    {
+        $repo = $this->getDoctrine()->getManager()
+            ->getRepository(Salle::class);
+        $result = $repo->testGetOneOrNullResult();
+        dump($result);
+        return new Response('<html><body></body></html>');
+    }
+
     public function test21()
     {
         $repo = $this->getDoctrine()->getManager()
@@ -209,4 +255,16 @@ class EssaiController extends AbstractController
         return $this->render('salles/listeSql.html.twig', ['liste' => $liste]);
     }
 
+    public function test23()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $salle = new Salle;
+        $salle->setBatiment('b'); // minuscule !
+        $salle->setEtage(3);
+        $salle->setNumero(63);
+        $em->persist($salle);
+        $em->flush();
+        return $this->redirectToRoute('salle_tp_voir',
+            array('id' => $salle->getId()));
+    }
 }

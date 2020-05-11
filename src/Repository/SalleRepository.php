@@ -60,6 +60,39 @@ class SalleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function testGetResult()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->where("s.batiment = 'B'");
+        $query = $queryBuilder->getQuery();
+        return $query->getResult();
+    }
+
+    public function testGetOneOrNullResult()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s)');
+        $queryBuilder->where("s.batiment = 'B'");
+        $query = $queryBuilder->getQuery();
+        return $query->getOneOrNullResult();
+    }
+
+    public function testGetArrayResult()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->where("s.batiment = 'B'");
+        $query = $queryBuilder->getQuery();
+        return $query->getArrayResult();
+    }
+
+    public function testGetSingleScalarResult()
+    {
+        $queryBuilder = $this->createQueryBuilder('s');
+        $queryBuilder->select('COUNT(s)');
+        $queryBuilder->where("s.batiment = 'B'");
+        $query = $queryBuilder->getQuery();
+        return $query->getSingleScalarResult();
+    }
 
     // /**
     //  * @return Salle[] Returns an array of Salle objects
