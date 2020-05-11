@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Marque;
+use App\Entity\Ordinateur;
 use App\Entity\Salle;
 use Doctrine\ORM\Query;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -267,4 +269,136 @@ class EssaiController extends AbstractController
         return $this->redirectToRoute('salle_tp_voir',
             array('id' => $salle->getId()));
     }
+
+    public function test25()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $marque = new Marque;
+        $marque->setNom('Dell');
+        $em->persist($marque);
+        $ordi = new Ordinateur;
+        $ordi->setNumero(702);
+        $ordi->setIp('192.168.7.02');
+        $ordi->setMarque($marque);
+        $em->persist($ordi);
+        $em->flush();
+        dump($ordi);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test26()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $marque = new Marque;
+        $marque->setNom('Lenovo');
+        $ordi = new Ordinateur;
+        $ordi->setNumero(701);
+        $ordi->setIp('192.168.7.01');
+        $ordi->setMarque($marque);
+        $em->persist($ordi);
+        $em->persist($marque);
+        $em->flush();
+        dump($ordi);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test27()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $marque = new Marque;
+        $marque->setNom('Acer');
+        $ordi = new Ordinateur;
+        $ordi->setNumero(703);
+        $ordi->setIp('192.168.7.03');
+        $ordi->setMarque($marque);
+        $em->persist($ordi);
+        $em->flush();
+        dump($ordi);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test28()
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var $ordi Ordinateur */
+        $ordi = $em->getRepository(Ordinateur::class)->findOneByNumero(703);
+        dump($ordi);
+        $nomMarque = $ordi->getMarque()->getNom();
+        dump($nomMarque);
+        dump($ordi);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test29()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ordi = new Ordinateur;
+        $ordi->setNumero(803);
+        $ordi->setIp('192.168.8.03');
+        $marque = $em->getRepository(Marque::class)->findOneByNom('Dell');
+        $ordi->setMarque($marque);
+        $salle = new Salle;
+        $salle->setBatiment('D');
+        $salle->setEtage(8);
+        $salle->setNumero(03);
+        $salle->addOrdinateur($ordi);
+        $em->persist($ordi);
+        $em->persist($salle);
+        $em->flush();
+        dump($salle);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test30()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ordi = new Ordinateur;
+        $ordi->setNumero(804);
+        $ordi->setIp('192.168.8.04');
+        $marque = $em->getRepository(Marque::class)->findOneByNom('Dell');
+        $ordi->setMarque($marque);
+        $em->persist($ordi);
+        $salle = new Salle;
+        $salle->setBatiment('D');
+        $salle->setEtage(8);
+        $salle->setNumero(8);
+        $salle->addOrdinateur($ordi);
+        $em->persist($salle);
+        $em->flush();
+        dump($ordi);
+        return new Response('<html><body></body></html>');
+    }
+
+    public function test32()
+    {
+        $em = $this->getDoctrine()->getManager();
+        $ordi = new Ordinateur;
+        $ordi->setNumero(805);
+        $ordi->setIp('192.168.8.05');
+        $marque = $em->getRepository(Marque::class)->findOneByNom('Dell');
+        $ordi->setMarque($marque);
+        $em->persist($ordi);
+        $salle = new Salle;
+        $salle->setBatiment('D');
+        $salle->setEtage(8);
+        $salle->setNumero(85);
+        $salle->addOrdinateur($ordi);
+        $em->persist($salle);
+        $ordi2 = new Ordinateur;
+        $ordi2->setNumero(806);
+        $ordi2->setIp('192.168.8.06');
+        $marque = $em->getRepository(Marque::class)->findOneByNom('Dell');
+        $ordi2->setMarque($marque);
+        $em->persist($ordi2);
+        $salle->addOrdinateur($ordi2);
+        $em->flush();
+        $id = $salle->getId();
+        $em->clear();
+        $salleTrouve = $em->getRepository(Salle::class)->find($id);
+        $result = "";
+        foreach ($salleTrouve->getOrdinateurs() as $ordi)
+            $result .= $ordi->getIp() . ' ';
+        return new Response('<html><body>' . $result . '</body></html>');
+    }
+
 }
